@@ -19,7 +19,7 @@ module.exports = {
       },
       height: {
         "almost-screen": "85vh",
-        "hero-height": "455px",
+        "hero-height": "355px",
       },
       borderWidth: {
         0.5: "0.5px",

@@ -2,10 +2,10 @@ import Head from 'next/head'
 import Image from 'next/image'
 import localFont from 'next/font/local'
 import Link from 'next/link'
-import { motion, useScroll } from 'framer-motion'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import useCopyToClipboard from './components/copytext'
 import MakeProject from './components/projects'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 
 // Fonts
 
@@ -55,31 +55,39 @@ export default function Home() {
       offset: ["end start", "start end"]
     })
 
+  const { scrollY } = useScroll()
+  const y = useTransform(scrollY, [0, 1], [0, -0.1], {
+        clamp: false,
+  })
+
   return (
     <>
       <Head>
-        <title>Alex Dalene | Creative Designer</title>
+        <title>Alex Dalene | Creative Developer</title>
         <meta name="description" content="Frontend-developer with a passion for graphic design." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <motion.div className='bg-hero-image bg-center bg-cover fixed w-screen h-screen -z-10' style={{ opacity: scrollYProgress }}></motion.div>
+      <motion.div className='w-screen bg-zinc-700 h-screen fixed z-50' initial={{ height: '100vh'}} animate={{ height: '0vh' }} transition={{ duration: 1, delay: 0.8 }} ></motion.div>
+      <motion.div className='bg-zinc-600 w-screen h-screen fixed z-50' initial={{ height: '100vh'}} animate={{ height: '0vh' }} transition={{ duration: 1, delay: 0.5 }} ></motion.div>
       <main className={[`${montreal.variable} font-montreal`, `${woodland.variable} font-woodland`, 'px-20 flex flex-col gap-20 mb-20 h-full'].join(' ')}>
         <section className='h-almost-screen flex flex-col justify-end'>
-          <header className='flex h-hero-height w-full justify-between flex-wrap'>
-            <div className='flex flex-col justify-between h-full'>
-              <h1 className='text-9xl font-woodland font-thin box-border leading-extra-tight'>creative<br /> <b className='font-bold'>developer</b></h1>
-              <div className='flex items-center gap-6'>
-                <Link href='/Resume-Alex-Dalene.pdf' target='_blank' className='text-6xl border-solid border-white border-2 rounded-full box-border p-3 font-montreal font-normal hover:bg-black hover:text-white hover:border-black transition'>RESUME</Link>
+          <motion.header className='flex h-hero-height w-full justify-between flex-wrap overflow-hidden' initial={{ overflow: 'hidden' }} animate={{ overflow: 'visible' }} transition={{ delay: 2 }}>
+            <motion.div className='flex flex-col justify-between h-full' style={{ y: y }}>
+              <motion.h1 className='text-9xl font-woodland font-thin -mt-5' initial={{ y: '-100%' }} animate={{ y: '0' }} transition={{ delay: 1.3, duration: 1 }}>Creative<br /> <b className='font-bold'>Developer</b></motion.h1>
+              <h2 className='font-montreal text-3xl'>Alex Dalene</h2>
+            </motion.div>
+            <div className='flex flex-col justify-between h-full gap-2 w-96 text-2xl font-montreal font-normal overflow-hidden'>
+              <div className='flex flex-col gap-2'>
+                <motion.h2 className='whitespace-nowrap font-bold' animate={{ x: '-118px'}} transition={{ repeat: Infinity, duration: 5, ease: 'linear' }}>CONTACT CONTACT CONTACT CONTACT CONTACT</motion.h2>
+                <motion.hr className='border-1' initial={{ width: '0%' }} animate={{ width: '100%' }} transition={{ delay: 1.2, duration: 1 }} />
+                <motion.p onClick={() => copy('alexdalene@outlook.com')} className='hover:cursor-copy hover:text-black transition flex items-center gap-3 active:text-white' initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.3, duration: 1 }}><Image src='/mail.svg' alt='simplistic icon of a paper plane' width='24' height='24' className='inline'></Image>alexdalene@outlook.com</motion.p>
+                <motion.p onClick={() => copy('47606931')} className='hover:text-black transition hover:cursor-copy flex items-center gap-3 active:text-white' initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.4, duration: 1 }}><Image src='/number.svg' alt='simple icon of a telephone' width='24' height='24' className='inline'></Image>476 06 931</motion.p>
               </div>
+              <Link href='/Resume-Alex-Dalene.pdf' target='_blank' className='text-6xl w-fit border-solid border-white border-2 rounded-full box-border p-3 font-montreal font-normal hover:bg-black hover:text-white hover:border-black transition'>RESUME</Link>
             </div>
-            <div className='flex flex-col h-full gap-2 w-96 text-2xl font-montreal font-normal overflow-hidden'>
-              <motion.h2 className='whitespace-nowrap font-bold' animate={{ x: '-118px'}} transition={{ repeat: Infinity, duration: 5, ease: 'linear' }} >CONTACT CONTACT CONTACT CONTACT CONTACT</motion.h2>
-              <hr className='border-1'/>
-              <motion.p onClick={() => copy('alexdalene@outlook.com')} className='hover:cursor-copy hover:text-black transition flex items-center gap-3 active:text-white'><Image src='/mail.svg' alt='simplistic icon of a paper plane' width='24' height='24' className='inline'></Image>alexdalene@outlook.com</motion.p>
-              <p onClick={() => copy('47606931')} className='hover:text-black transition hover:cursor-copy flex items-center gap-3 active:text-white'> <Image src='/number.svg' alt='simple icon of a telephone' width='24' height='24' className='inline'></Image>476 06 931</p>
-            </div>
-          </header>
+          </motion.header>
         </section>
         <section className='h-full flex flex-col gap-20' id='projects'>
         <div>
